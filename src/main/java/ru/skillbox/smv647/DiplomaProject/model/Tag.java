@@ -18,6 +18,6 @@ public class Tag {
     @Column(name = "name")
     private String name;
 
-    @ManyToMany(mappedBy = "post")
+    @ManyToMany(mappedBy = "tags")
     private Set<Post> posts;
 }
