@@ -1,0 +1,10 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+  datasource:
+    url: jdbc:mysql://localhost:3306/skillbox_diploma_smv647?useSSL=false&serverTimezone=UTC
+    username: root
+    password: password1
+    initialization-mode: always
