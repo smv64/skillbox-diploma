@@ -1,5 +1,7 @@
 package ru.skillbox.smv647.DiplomaProject.model;
 
+import lombok.Data;
+import lombok.experimental.Accessors;
 import ru.skillbox.smv647.DiplomaProject.model.enums.PostModerationStatusEnum;
 
 import javax.persistence.*;
@@ -8,6 +10,8 @@ import java.util.Set;
 
 @Entity
 @Table(name = "POSTS")
+@Data
+@Accessors(chain = true)
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

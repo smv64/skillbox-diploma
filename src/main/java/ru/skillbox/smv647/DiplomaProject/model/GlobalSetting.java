@@ -1,9 +1,14 @@
 package ru.skillbox.smv647.DiplomaProject.model;
 
+import lombok.Data;
+import lombok.experimental.Accessors;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "GLOBAL_SETTINGS")
+@Data
+@Accessors(chain = true)
 public class GlobalSetting {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

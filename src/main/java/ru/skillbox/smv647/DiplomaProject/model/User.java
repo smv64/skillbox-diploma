@@ -1,12 +1,15 @@
 package ru.skillbox.smv647.DiplomaProject.model;
 
-import org.springframework.web.bind.annotation.GetMapping;
+import lombok.Data;
+import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "USERS")
+@Data
+@Accessors(chain = true)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

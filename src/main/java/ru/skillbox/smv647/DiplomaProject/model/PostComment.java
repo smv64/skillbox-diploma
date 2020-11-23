@@ -1,10 +1,15 @@
 package ru.skillbox.smv647.DiplomaProject.model;
 
+import lombok.Data;
+import lombok.experimental.Accessors;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "POST_COMMENTS")
+@Data
+@Accessors(chain = true)
 public class PostComment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
