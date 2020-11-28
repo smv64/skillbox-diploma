@@ -1,5 +1,14 @@
 vars:
   url-host: jdbc:mysql://localhost:3306
+  schema: skillbox_diploma_smv647
+  url-connection-params: useSSL=false&serverTimezone=Europe/Moscow&allowPublicKeyRetrieval=true
+  app:
+    title: DevPub
+    subtitle: Рассказы разработчиков
+    phone: +7 903 666-44-55
+    email: mail@mail.ru
+    copyright: Дмитрий Сергеев
+    copyrightFrom: 2005
 
 spring:
   jpa:
@@ -7,13 +16,22 @@ spring:
       ddl-auto: none
     show-sql: true
   datasource:
-    url: ${vars.url-host}/skillbox_diploma_smv647?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    url: ${vars.url-host}/${vars.schema}?${vars.url-connection-params}
     username: root
     password: password1
     initialization-mode: always
   flyway:
-    url: ${vars.url-host}/?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-    schemas: skillbox_diploma_smv647
+    url: ${vars.url-host}/?${vars.url-connection-params}
+    schemas: ${vars.schema}
     user: "root"
     password: "password1"
     locations: classpath:db/migration
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
