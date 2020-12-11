@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 import ru.skillbox.smv647.DiplomaProject.model.PostWithCounts;
 import ru.skillbox.smv647.DiplomaProject.model.enums.PostModerationStatusEnum;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Repository

@@ -6,7 +6,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.skillbox.smv647.DiplomaProject.controllers.responses.post.PostsResponse;
+import ru.skillbox.smv647.DiplomaProject.model.Post;
 import ru.skillbox.smv647.DiplomaProject.model.PostWithCounts;
 import ru.skillbox.smv647.DiplomaProject.model.enums.PostModerationStatusEnum;
 import ru.skillbox.smv647.DiplomaProject.repositories.PostRepository;
@@ -15,7 +17,9 @@ import ru.skillbox.smv647.DiplomaProject.repositories.PostWithCountsRepository;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,6 +37,21 @@ public class PostService {
     private static final String FIELD_COMMENT_COUNT = "commentCount";
     private static final String FIELD_LIKE_COUNT = "likeCount";
 
+
+    public List<Post> findAllVisiblePostsWithTags(String query){
+        if(query.isEmpty()){
+            return postRepository.findWithTagsByModerationStatusAndActive(
+                    PostModerationStatusEnum.ACCEPTED,
+                    IS_ACTIVE
+            );
+        } else {
+            return postRepository.findWithTagsByModerationStatusAndActiveAndTagsNameLike(
+                    PostModerationStatusEnum.ACCEPTED,
+                    IS_ACTIVE,
+                    query
+            );
+        }
+    }
 
     public PostsResponse findAll(String mode, Integer offset, Integer limit) {
         PostsResponse postsResponse = new PostsResponse();

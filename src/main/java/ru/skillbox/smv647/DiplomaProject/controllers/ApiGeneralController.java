@@ -3,12 +3,14 @@ package ru.skillbox.smv647.DiplomaProject.controllers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import ru.skillbox.smv647.DiplomaProject.controllers.responses.GlobalSettingsResponse;
 import ru.skillbox.smv647.DiplomaProject.controllers.responses.InitResponse;
 import ru.skillbox.smv647.DiplomaProject.controllers.responses.TagsResponse;
 import ru.skillbox.smv647.DiplomaProject.services.GlobalSettingService;
 import ru.skillbox.smv647.DiplomaProject.services.TagService;
+
+import java.util.Map;
 
 
 /**
@@ -27,12 +29,14 @@ public class ApiGeneralController {
     }
 
     @RequestMapping(value = "/api/settings", method = RequestMethod.GET)
-    public GlobalSettingsResponse globalSetting() {
+    public Map<String, Boolean> globalSetting() {
         return globalSettingService.getGlobalSettingsResponse();
     }
 
     @RequestMapping(value = "/api/tag", method = RequestMethod.GET)
-    public TagsResponse tags() {
-        return tagService.getTagsResponse();
+    public TagsResponse getTags(
+            @RequestParam(name = "query", defaultValue = "") String query
+    ) {
+        return tagService.getTagsResponse(query);
     }
 }

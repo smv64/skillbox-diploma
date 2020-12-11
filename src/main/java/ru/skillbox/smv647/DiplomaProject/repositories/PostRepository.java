@@ -1,7 +1,5 @@
 package ru.skillbox.smv647.DiplomaProject.repositories;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -9,15 +7,34 @@ import org.springframework.stereotype.Repository;
 import ru.skillbox.smv647.DiplomaProject.model.Post;
 import ru.skillbox.smv647.DiplomaProject.model.enums.PostModerationStatusEnum;
 
+import java.util.List;
+import java.util.Set;
+
 @Repository
 public interface PostRepository extends JpaRepository<Post, Integer> {
+    @Query(value = "Select distinct p from Post p " +
+            "join fetch p.tags t " +
+            "where " +
+                "p.moderationStatus = :statusEnum " +
+                "and p.active = :active " +
+                "and p.time <= current_timestamp "
+    )
+    List<Post> findWithTagsByModerationStatusAndActive(
+            @Param("statusEnum") PostModerationStatusEnum statusEnum,
+            @Param("active") Byte active
+    );
 
-    @Query("Select p from Post p " +
-            "where moderationStatus = :statusEnum and active = :active " +
-            "and time <= current_timestamp")
-    Page<Post> findByModerationStatusAndActiveNative(
+    @Query(value = "Select distinct p from Post p " +
+            "join fetch p.tags t " +
+            "where " +
+                "p.moderationStatus = :statusEnum " +
+                "and p.active = :active " +
+                "and p.time <= current_timestamp " +
+                "and t.name like :tagStartWith%"
+    )
+    List<Post> findWithTagsByModerationStatusAndActiveAndTagsNameLike(
             @Param("statusEnum") PostModerationStatusEnum statusEnum,
             @Param("active") Byte active,
-            Pageable pageable
+            @Param("tagStartWith") String tagStartWith
     );
 }

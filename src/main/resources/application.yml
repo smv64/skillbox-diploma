@@ -14,7 +14,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none
-    show-sql: true
+#    show-sql: true
   datasource:
     url: ${vars.url-host}/${vars.schema}?${vars.url-connection-params}
     username: root

@@ -1,6 +1,7 @@
 package ru.skillbox.smv647.DiplomaProject.model;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
@@ -8,7 +9,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "USERS")
-@Data
+@Data @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Accessors(chain = true)
 public class User {
     @Id

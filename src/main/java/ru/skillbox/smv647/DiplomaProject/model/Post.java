@@ -1,11 +1,14 @@
 package ru.skillbox.smv647.DiplomaProject.model;
 
-import lombok.Data;
+import lombok.*;
 import lombok.experimental.Accessors;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import ru.skillbox.smv647.DiplomaProject.model.enums.PostModerationStatusEnum;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -26,11 +29,11 @@ public class Post {
     @Enumerated(EnumType.STRING)
     private PostModerationStatusEnum moderationStatus;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "moderator_id")
     private User moderator;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User author;
 
@@ -46,11 +49,15 @@ public class Post {
     @Column(name = "view_count", nullable = false)
     private Integer viewCount;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY
+//            , cascade = CascadeType.ALL
+    )
+    @Fetch(FetchMode.JOIN)
     @JoinTable(
             name = "TAG2POST",
-            joinColumns = @JoinColumn(name = "tag_id"),
-            inverseJoinColumns = @JoinColumn(name = "post_id")
+            joinColumns = @JoinColumn(name = "post_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "id")
     )
-    private Set<Tag> tags;
+//    @EqualsAndHashCode.Exclude
+    private Set<Tag> tags = new HashSet<>();
 }

@@ -1,9 +1,10 @@
 package ru.skillbox.smv647.DiplomaProject.model;
 
-import lombok.Data;
+import lombok.*;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -19,5 +20,7 @@ public class Tag {
     private String name;
 
     @ManyToMany(mappedBy = "tags")
-    private Set<Post> posts;
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private Set<Post> posts = new HashSet<>();
 }
