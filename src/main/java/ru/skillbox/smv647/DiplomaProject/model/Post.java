@@ -49,15 +49,12 @@ public class Post {
     @Column(name = "view_count", nullable = false)
     private Integer viewCount;
 
-    @ManyToMany(fetch = FetchType.LAZY
-//            , cascade = CascadeType.ALL
-    )
+    @ManyToMany(fetch = FetchType.LAZY)
     @Fetch(FetchMode.JOIN)
     @JoinTable(
             name = "TAG2POST",
             joinColumns = @JoinColumn(name = "post_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "id")
     )
-//    @EqualsAndHashCode.Exclude
     private Set<Tag> tags = new HashSet<>();
 }

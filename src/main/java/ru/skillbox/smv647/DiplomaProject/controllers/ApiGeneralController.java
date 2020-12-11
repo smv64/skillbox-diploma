@@ -5,9 +5,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import ru.skillbox.smv647.DiplomaProject.controllers.responses.CalendarResponse;
 import ru.skillbox.smv647.DiplomaProject.controllers.responses.InitResponse;
 import ru.skillbox.smv647.DiplomaProject.controllers.responses.TagsResponse;
 import ru.skillbox.smv647.DiplomaProject.services.GlobalSettingService;
+import ru.skillbox.smv647.DiplomaProject.services.PostService;
 import ru.skillbox.smv647.DiplomaProject.services.TagService;
 
 import java.util.Map;
@@ -22,6 +24,7 @@ public class ApiGeneralController {
     private final InitResponse initResponse;
     private final GlobalSettingService globalSettingService;
     private final TagService tagService;
+    private final PostService postService;
 
     @RequestMapping(value = "/api/init", method = RequestMethod.GET)
     public InitResponse initData() {
@@ -38,5 +41,12 @@ public class ApiGeneralController {
             @RequestParam(name = "query", defaultValue = "") String query
     ) {
         return tagService.getTagsResponse(query);
+    }
+
+    @RequestMapping(value = "/api/calendar", method = RequestMethod.GET)
+    public CalendarResponse getCalendar(
+            @RequestParam(name = "year", required = false) Integer searchYear
+    ){
+        return postService.getCalendarResponse(searchYear);
     }
 }

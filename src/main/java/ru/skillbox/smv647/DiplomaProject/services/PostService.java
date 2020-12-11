@@ -6,7 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import ru.skillbox.smv647.DiplomaProject.controllers.responses.CalendarResponse;
 import ru.skillbox.smv647.DiplomaProject.controllers.responses.post.PostsResponse;
 import ru.skillbox.smv647.DiplomaProject.model.Post;
 import ru.skillbox.smv647.DiplomaProject.model.PostWithCounts;
@@ -17,8 +17,9 @@ import ru.skillbox.smv647.DiplomaProject.repositories.PostWithCountsRepository;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Collection;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -38,8 +39,8 @@ public class PostService {
     private static final String FIELD_LIKE_COUNT = "likeCount";
 
 
-    public List<Post> findAllVisiblePostsWithTags(String query){
-        if(query.isEmpty()){
+    public List<Post> findAllVisiblePostsWithTags(String query) {
+        if (query.isEmpty()) {
             return postRepository.findWithTagsByModerationStatusAndActive(
                     PostModerationStatusEnum.ACCEPTED,
                     IS_ACTIVE
@@ -154,6 +155,33 @@ public class PostService {
                                 .collect(Collectors.toList())
                 );
         return postsResponse;
+    }
+
+    public CalendarResponse getCalendarResponse(Integer searchYear) {
+        CalendarResponse calendarResponse = new CalendarResponse();
+        Set<Integer> years = calendarResponse.getYears();
+        Map<String, Integer> posts = calendarResponse.getPosts();
+        if (searchYear == null) searchYear = LocalDateTime.now().getYear();
+
+        List<LocalDateTime> times = postRepository.findTimeByModerationStatusAndActive(
+                PostModerationStatusEnum.ACCEPTED,
+                IS_ACTIVE
+        );
+
+
+        for (LocalDateTime time : times) {
+            Integer yearPublication = time.getYear();
+            years.add(yearPublication);
+            if (yearPublication.equals(searchYear)) {
+                String date = DateTimeFormatter.ISO_DATE.format(time);
+                Integer count = posts.getOrDefault(date, 0) + 1;
+                posts.put(date, count);
+            }
+        }
+
+        calendarResponse.setYears(years);
+        calendarResponse.setPosts(posts);
+        return calendarResponse;
     }
 
     private Sort sortByMode(String mode) {
